@@ -1,11 +1,15 @@
-  const express = require('express')
+const express = require('express')
+const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
 app.use(express.json())
 
-let persons = [
+app.use(morgan("tiny"))
 
-    
+app.use(cors())
+
+let persons = [    
       { 
         "id": 1,
         "name": "Arto Hellas", 
@@ -29,38 +33,57 @@ let persons = [
     ]
   
   
-app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
+app.get('/info', (req, res) => {
+  const amount = persons.length
+  const date = new Date()
+  res.send(`<div>Phonebook has info for ${amount} people</div>
+            <p>${date}</p>`)
 })
 
-app.get('/api/notes', (req, res) => {
-  res.json(notes)
+app.get('/api/persons', (req, res) => {
+  res.json(persons)
 })
 
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const note = notes.find(note => note.id === id)
-  if (note) {
-    response.json(note)
+  const person = persons.find(person => person.id === id)
+  if (person) {
+    response.json(person)
   } else {
     response.status(404).end()
   }
 })
 
-app.delete('/api/notes/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
+  persons = persons.filter(person => person.id !== id)
 
   response.status(204).end()
 })
 
-app.post('/api/notes', (request, response) => {
-  const note = request.body
-  console.log(note)
-  response.json(note)
+app.post('/api/persons', (request, response) => {
+  const person = request.body
+  console.log(request.body)
+  const name = person.name
+  const number = person.number
+  if (!name || !number) {
+    return response.status(400).json( {
+      error: 'name or number missing'
+    })
+  }
+  if (persons.find(person => person.name === name)){
+    return response.status(400).json( {
+      error: 'name must be unique'
+    })
+  }
+
+  const id = parseInt(Math.random()*1000)
+  person.id = id
+  persons = persons.concat(person)
+  response.json(person)
 })
 
 
-const port = 3001
+const PORT = process.env.PORT || 3001
 app.listen(port)
 console.log(`Server running on port ${port}`)
