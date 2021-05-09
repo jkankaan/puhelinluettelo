@@ -12,8 +12,12 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^9.0.0",
+    "emacs": "0.0.1",
     "express": "^4.17.1",
-    "morgan": "^1.10.0"
+    "mongoose": "^5.12.7",
+    "morgan": "^1.10.0",
+    "vim": "^0.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
