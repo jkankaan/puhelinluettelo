@@ -21,6 +21,7 @@
     "vim": "^0.1.0"
   },
   "devDependencies": {
+    "eslint": "^7.27.0",
     "nodemon": "^2.0.7"
   }
 }

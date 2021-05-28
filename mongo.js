@@ -17,26 +17,26 @@ const url =
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String
-  })
+  name: String,
+  number: String
+})
   
-  const Person = mongoose.model('Person', personSchema)
+const Person = mongoose.model('Person', personSchema)
   
-  const person = new Person({
-    name: name,
-    number: number
-  })
-  if (process.argv[3] && process.argv[4]) {
-    person.save().then(response => {
-        console.log(`added ${name} number ${number} to phonebook`)
-        mongoose.connection.close()
+const person = new Person({
+  name: name,
+  number: number
+})
+if (process.argv[3] && process.argv[4]) {
+  person.save().then(() => {
+    console.log(`added ${name} number ${number} to phonebook`)
+    mongoose.connection.close()
   })}
-  else {
-    Person.find({}).then(persons => {
-        persons.forEach(person => {
-            console.log(person.name, person.number)
-        })
-        mongoose.connection.close()
+else {
+  Person.find({}).then(persons => {
+    persons.forEach(person => {
+      console.log(person.name, person.number)
     })
-  }
+    mongoose.connection.close()
+  })
+}
